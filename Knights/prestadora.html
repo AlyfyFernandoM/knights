@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prestadora - Rede Knights of Empress</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #6a0dad 0%, #b983ff 100%);
+      color: #f0e9ff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1200px;
+      background: rgba(178, 142, 255, 0.18);
+      backdrop-filter: blur(10px);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(101,32,142,0.3);
+      border-radius: 16px;
+      margin-bottom: 32px;
+    }
+
+    .logo {
+      background: linear-gradient(135deg, #b983ff, #6a0dad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    nav a {
+      color: #cbb7ff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: rgba(178, 142, 255, 0.15);
+      transition: background 0.3s ease;
+      margin-left: 16px;
+    }
+    nav a:hover, nav a:focus {
+      background: rgba(178, 142, 255, 0.35);
+      outline: none;
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    h1, h2 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      color: white;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    section {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 32px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Portal de Notícias */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .news-card {
+      background: rgba(178, 142, 255, 0.25);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(106, 13, 173, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .news-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(106, 13, 173, 0.25);
+    }
+
+    .news-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .news-card h3 {
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: #f0e9ff;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .news-card p {
+      font-size: 0.95rem;
+      color: #d9ccff;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .news-card .news-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: #cbb7ff;
+    }
+
+    .news-card .news-category {
+      background: rgba(178, 142, 255, 0.3);
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    /* Empresas que Curtiram */
+    .liked-by-companies-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .company-item {
+      background: rgba(178, 142, 255, 0.25);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(106, 13, 173, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .company-item img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 12px;
+      border: 2px solid #b983ff;
+    }
+
+    .company-item h3 {
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: #f0e9ff;
+      margin-bottom: 8px;
+    }
+
+    .company-item p {
+      font-size: 0.95rem;
+      color: #d9ccff;
+      margin-bottom: 12px;
+    }
+
+    .contact-button {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 4px;
+    }
+    .contact-button:hover {
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+    }
+    .contact-button .material-icons {
+      font-size: 20px;
+    }
+
+    /* Formulário de Edição */
+    .edit-profile-form label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      margin-top: 16px;
+      color: #e0e0e0;
+    }
+
+    .edit-profile-form input,
+    .edit-profile-form select,
+    .edit-profile-form textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      outline-offset: 4px;
+      outline-color: transparent;
+      transition: outline-color 0.25s ease;
+      font-family: 'Inter', sans-serif;
+      background: rgba(255,255,255,0.07);
+      color: white;
+    }
+
+    .edit-profile-form input:focus,
+    .edit-profile-form select:focus,
+    .edit-profile-form textarea:focus {
+      outline-color: #8b5cf6;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .edit-profile-form textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .edit-profile-form button {
+      margin-top: 32px;
+      width: 100%;
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+      padding: 14px 0;
+      border: none;
+      border-radius: 16px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 8px 20px rgba(107, 99, 246, 0.4);
+    }
+
+    .edit-profile-form button:hover,
+    .edit-profile-form button:focus {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      box-shadow: 0 12px 30px rgba(107, 99, 246, 0.6);
+      outline: none;
+    }
+
+    .error-message {
+      margin-top: 8px;
+      color: #ff6b6b;
+      font-size: 0.9rem;
+    }
+
+    .profile-pic-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 16px;
+      margin-bottom: 24px;
+    }
+
+    .profile-pic-upload img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #b983ff;
+      margin-bottom: 12px;
+    }
+
+    .profile-pic-upload input[type="file"] {
+      display: none;
+    }
+
+    .profile-pic-upload label.upload-button {
+      background: rgba(178, 142, 255, 0.3);
+      padding: 8px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-weight: 600;
+      color: #e0e0e0;
+    }
+
+    .profile-pic-upload label.upload-button:hover {
+      background: rgba(178, 142, 255, 0.5);
+    }
+
+    footer {
+      margin-top: 40px;
+      background: rgba(101,32,142, 0.35);
+      padding: 24px;
+      text-align: center;
+      color: #cdb8ff;
+      font-size: 0.9rem;
+      width: 100%;
+      max-width: 1200px;
+      border-radius: 16px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px 20px;
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      nav a {
+        margin: 0;
+      }
+      h1, h2 {
+        font-size: 2rem;
+      }
+      section {
+        padding: 24px;
+      }
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+      .liked-by-companies-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header role="banner">
+    <div class="logo">Knights of Empress</div>
+    <nav role="navigation" aria-label="Menu da Prestadora">
+      <a href="#news-portal">Portal de Notícias</a>
+      <a href="#companies-liked-me">Empresas que me Curtiram</a>
+      <a href="#edit-profile">Editar Perfil</a>
+      <a href="login.html">Sair</a>
+    </nav>
+  </header>
+
+  <main role="main">
+    <section id="news-portal" aria-labelledby="news-title">
+      <h2 id="news-title">Portal de Notícias e Oportunidades</h2>
+      <div class="news-grid" id="news-grid">
+        <!-- Notícias serão carregadas aqui -->
+      </div>
+    </section>
+
+    <section id="companies-liked-me" aria-labelledby="liked-by-title">
+      <h2 id="liked-by-title">Empresas que Curtiram Meu Perfil</h2>
+      <div class="liked-by-companies-list" id="liked-by-companies-list">
+        <p id="no-companies-liked" style="text-align: center; color: #d9ccff;">Nenhuma empresa curtiu seu perfil ainda.</p>
+      </div>
+    </section>
+
+    <section id="edit-profile" aria-labelledby="edit-profile-title">
+      <h2 id="edit-profile-title">Editar Meu Perfil</h2>
+      <form id="editProfileForm" class="edit-profile-form" novalidate>
+        <div class="profile-pic-upload">
+          <img id="currentProfilePic" src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop" alt="Sua Foto de Perfil" />
+          <input type="file" id="profilePicInput" accept="image/*" />
+          <label for="profilePicInput" class="upload-button">Alterar Foto</label>
+        </div>
+
+        <label for="providerName">Nome da Prestadora / Negócio</label>
+        <input type="text" id="providerName" name="providerName" placeholder="Seu nome ou nome do seu negócio" required aria-required="true" />
+
+        <label for="providerDescription">Descrição dos Serviços / Produtos</label>
+        <textarea id="providerDescription" name="providerDescription" placeholder="Conte sobre seus serviços ou produtos (mínimo 10 caracteres)" required aria-required="true"></textarea>
+
+        <label for="providerSegment">Segmento</label>
+        <select id="providerSegment" name="providerSegment" required aria-required="true">
+          <option value="" disabled selected>Selecione o segmento</option>
+          <option value="Artesanato">Artesanato</option>
+          <option value="Beleza">Beleza</option>
+          <option value="Alimentação">Alimentação</option>
+          <option value="Tecnologia">Tecnologia</option>
+          <option value="Moda">Moda</option>
+          <option value="Saúde e Bem-estar">Saúde e Bem-estar</option>
+          <option value="Educação">Educação</option>
+          <option value="Outros">Outros</option>
+        </select>
+
+        <label for="contactEmail">E-mail de Contato</label>
+        <input type="email" id="contactEmail" name="contactEmail" placeholder="seu.email@example.com" required aria-required="true" />
+
+        <label for="contactWhatsapp">WhatsApp de Contato (com DDD)</label>
+        <input type="tel" id="contactWhatsapp" name="contactWhatsapp" placeholder="Ex: 5511999998888" pattern="[0-9]{10,15}" title="Apenas números, com DDD (ex: 5511999998888)" required aria-required="true" />
+
+        <button type="submit" aria-label="Salvar alterações do perfil">Salvar Alterações</button>
+      </form>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    &copy; 2025 Knights of Empress. Todos os direitos reservados.
+  </footer>
+
+  <script>
+    // Dados simulados da prestadora logada
+    let currentProviderData = {
+      id: 101,
+      name: 'Maria Silva',
+      description: 'Especialista em artesanato sustentável, criando peças únicas com materiais reciclados. Trabalho com decoração, joias e presentes personalizados.',
+      segment: 'Artesanato',
+      profilePic: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+      contactEmail: 'maria.artesanato@email.com',
+      contactWhatsapp: '5511987654321'
+    };
+
+    // Notícias e oportunidades
+    const newsData = [
+      {
+        id: 1,
+        title: 'Feira de Empreendedoras 2025: Inscrições Abertas',
+        content: 'A maior feira de negócios femininos do país está com inscrições abertas. Participe e expanda sua rede de contatos.',
+        image: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
+        category: 'Eventos',
+        date: '15 Jan 2025'
+      },
+      {
+        id: 2,
+        title: 'Curso Gratuito: Marketing Digital para Pequenos Negócios',
+        content: 'Aprenda estratégias eficazes de marketing digital para impulsionar seu negócio nas redes sociais.',
+        image: 'https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
+        category: 'Educação',
+        date: '12 Jan 2025'
+      },
+      {
+        id: 3,
+        title: 'Microcrédito para Mulheres Empreendedoras',
+        content: 'Novo programa de microcrédito com juros especiais para mulheres que querem expandir seus negócios.',
+        image: 'https://images.pexels.com/photos/259027/pexels-photo-259027.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
+        category: 'Financiamento',
+        date: '10 Jan 2025'
+      },
+      {
+        id: 4,
+        title: 'Workshop: Precificação Estratégica',
+        content: 'Aprenda a precificar seus produtos e serviços de forma estratégica para maximizar seus lucros.',
+        image: 'https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
+        category: 'Capacitação',
+        date: '8 Jan 2025'
+      },
+      {
+        id: 5,
+        title: 'Rede de Mentoria: Conectando Experiências',
+        content: 'Programa de mentoria que conecta empreendedoras experientes com iniciantes no mundo dos negócios.',
+        image: 'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
+        category: 'Mentoria',
+        date: '5 Jan 2025'
+      },
+      {
+        id: 6,
+        title: 'Sustentabilidade nos Negócios: Tendências 2025',
+        content: 'Como incorporar práticas sustentáveis em seu negócio e atrair consumidores conscientes.',
+        image: 'https://images.pexels.com/photos/1181772/pexels-photo-1181772.jpeg?auto=compress&cs=tinysrgb&w=400&h=200&fit=crop',
+        category: 'Sustentabilidade',
+        date: '3 Jan 2025'
+      }
+    ];
+
+    // Empresas que curtiram (simulado)
+    const companiesThatLikedMe = [
+      {
+        id: 201,
+        name: 'Loja Decoração Moderna',
+        description: 'Buscamos artesãs para parcerias em produtos exclusivos.',
+        logo: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop',
+        contactEmail: 'contato@lojadecor.com',
+        contactWhatsapp: '5511987651234'
+      },
+      {
+        id: 202,
+        name: 'Galeria Arte Urbana',
+        description: 'Interessados em peças de arte contemporânea.',
+        logo: 'https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=80&h=80&fit=crop',
+        contactEmail: 'info@galeriaarte.com',
+        contactWhatsapp: '5511998765432'
+      }
+    ];
+
+    // Elementos DOM
+    const newsGrid = document.getElementById('news-grid');
+    const likedByCompaniesList = document.getElementById('liked-by-companies-list');
+    const noCompaniesLikedMessage = document.getElementById('no-companies-liked');
+    const editProfileForm = document.getElementById('editProfileForm');
+    const currentProfilePic = document.getElementById('currentProfilePic');
+    const profilePicInput = document.getElementById('profilePicInput');
+
+    // Renderizar notícias
+    function renderNews() {
+      newsGrid.innerHTML = '';
+      newsData.forEach(news => {
+        const newsCard = document.createElement('div');
+        newsCard.className = 'news-card';
+        newsCard.innerHTML = `
+          <img src="${news.image}" alt="${news.title}" />
+          <h3>${news.title}</h3>
+          <p>${news.content}</p>
+          <div class="news-meta">
+            <span class="news-category">${news.category}</span>
+            <span>${news.date}</span>
+          </div>
+        `;
+        newsCard.addEventListener('click', () => {
+          alert(`Você clicou na notícia: ${news.title}\n\n${news.content}`);
+        });
+        newsGrid.appendChild(newsCard);
+      });
+    }
+
+    // Renderizar empresas que curtiram
+    function renderCompaniesThatLikedMe() {
+      likedByCompaniesList.innerHTML = '';
+      if (companiesThatLikedMe.length === 0) {
+        noCompaniesLikedMessage.style.display = 'block';
+      } else {
+        noCompaniesLikedMessage.style.display = 'none';
+        companiesThatLikedMe.forEach(company => {
+          const item = document.createElement('div');
+          item.className = 'company-item';
+          item.innerHTML = `
+            <img src="${company.logo}" alt="Logo da ${company.name}" />
+            <h3>${company.name}</h3>
+            <p>${company.description}</p>
+            <div>
+              <a href="mailto:${company.contactEmail}" class="contact-button">
+                <span class="material-icons">email</span> E-mail
+              </a>
+              <a href="https://wa.me/${company.contactWhatsapp}" target="_blank" rel="noopener noreferrer" class="contact-button">
+                <span class="material-icons">chat</span> WhatsApp
+              </a>
+            </div>
+          `;
+          likedByCompaniesList.appendChild(item);
+        });
+      }
+    }
+
+    // Carregar dados do perfil
+    function loadProviderData() {
+      currentProfilePic.src = currentProviderData.profilePic;
+      document.getElementById('providerName').value = currentProviderData.name;
+      document.getElementById('providerDescription').value = currentProviderData.description;
+      document.getElementById('providerSegment').value = currentProviderData.segment;
+      document.getElementById('contactEmail').value = currentProviderData.contactEmail;
+      document.getElementById('contactWhatsapp').value = currentProviderData.contactWhatsapp;
+    }
+
+    // Função para exibir erros
+    function showError(element, message) {
+      const error = document.createElement('div');
+      error.className = 'error-message';
+      error.textContent = message;
+      element.insertAdjacentElement('afterend', error);
+      element.focus();
+    }
+
+    // Event listener para o formulário
+    editProfileForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Remover mensagens de erro anteriores
+      const errors = editProfileForm.querySelectorAll('.error-message');
+      errors.forEach(e => e.remove());
+
+      let valido = true;
+      const formData = new FormData(editProfileForm);
+
+      // Validações
+      if (formData.get('providerName').trim().length < 3) {
+        showError(document.getElementById('providerName'), 'Nome deve ter pelo menos 3 caracteres.');
+        valido = false;
+      }
+      if (formData.get('providerDescription').trim().length < 10) {
+        showError(document.getElementById('providerDescription'), 'Descrição deve ter pelo menos 10 caracteres.');
+        valido = false;
+      }
+      if (!formData.get('providerSegment')) {
+        showError(document.getElementById('providerSegment'), 'Selecione um segmento.');
+        valido = false;
+      }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.get('contactEmail'))) {
+        showError(document.getElementById('contactEmail'), 'E-mail inválido.');
+        valido = false;
+      }
+      const whatsappRegex = /^[0-9]{10,15}$/;
+      if (!whatsappRegex.test(formData.get('contactWhatsapp'))) {
+        showError(document.getElementById('contactWhatsapp'), 'WhatsApp deve conter apenas números (10-15 dígitos).');
+        valido = false;
+      }
+
+      if (valido) {
+        // Atualizar dados
+        currentProviderData.name = formData.get('providerName').trim();
+        currentProviderData.description = formData.get('providerDescription').trim();
+        currentProviderData.segment = formData.get('providerSegment');
+        currentProviderData.contactEmail = formData.get('contactEmail').trim();
+        currentProviderData.contactWhatsapp = formData.get('contactWhatsapp').trim();
+
+        // Salvar no localStorage para simular persistência
+        localStorage.setItem('currentProviderData', JSON.stringify(currentProviderData));
+
+        alert('Perfil atualizado com sucesso!');
+      }
+    });
+
+    // Event listener para mudança de foto
+    profilePicInput.addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          currentProfilePic.src = e.target.result;
+          currentProviderData.profilePic = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+      // Carregar dados salvos se existirem
+      const savedData = localStorage.getItem('currentProviderData');
+      if (savedData) {
+        currentProviderData = JSON.parse(savedData);
+      }
+      
+      renderNews();
+      renderCompaniesThatLikedMe();
+      loadProviderData();
+    });
+  </script>
+</body>
+</html>

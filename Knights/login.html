@@ -128,14 +128,15 @@
 
       <button type="submit" aria-label="Enviar formulário de login">Entrar</button>
     </form>
-   <a href="tela-cadastro.html" class="signup-link" aria-label="Ir para cadastro">Ainda não tem cadastro? Faça seu cadastro</a>
+    <a href="tela-cadastro.html" class="signup-link" aria-label="Ir para cadastro">Ainda não tem cadastro? Faça seu cadastro</a>
 
   </main>
 
   <script>
-    // Usuários cadastrados simulados (no sistema real isso viria do backend)
+    // Usuários cadastrados simulados
     const usuariosCadastrados = [
-      { email: 'usuario@example.com', senha: '123456', nome: 'Usuária Teste' }
+      { email: 'empresa@example.com', senha: '123456', nome: 'Empresa Teste', tipo: 'empresa' },
+      { email: 'prestadora@example.com', senha: '123456', nome: 'Prestadora Teste', tipo: 'prestadora' }
     ];
 
     const loginForm = document.getElementById('loginForm');
@@ -164,7 +165,13 @@
       if (usuario) {
         alert(`Bem-vinda, ${usuario.nome}! Login efetuado com sucesso.`);
         loginForm.reset();
-        // Aqui você pode redirecionar para página principal ou painel do usuário
+        
+        // Redirecionar baseado no tipo de usuário
+        if (usuario.tipo === 'empresa') {
+          window.location.href = 'empresa.html';
+        } else if (usuario.tipo === 'prestadora') {
+          window.location.href = 'prestadora.html';
+        }
       } else {
         showError(loginForm['login-senha'], 'E-mail ou senha inválidos.');
       }

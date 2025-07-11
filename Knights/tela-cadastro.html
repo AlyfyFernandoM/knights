@@ -137,12 +137,21 @@
       <label for="segmento">Segmento</label>
       <select id="segmento" name="segmento" required aria-required="true">
         <option value="" disabled selected>Selecione o segmento</option>
-        <option value="artesanato">Artesanato</option>
-        <option value="beleza">Beleza</option>
-        <option value="alimentacao">Alimentação</option>
-        <option value="tecnologia">Tecnologia</option>
-        <option value="moda">Moda</option>
-        <option value="outros">Outros</option>
+        <option value="Artesanato">Artesanato</option>
+        <option value="Beleza">Beleza</option>
+        <option value="Alimentação">Alimentação</option>
+        <option value="Tecnologia">Tecnologia</option>
+        <option value="Moda">Moda</option>
+        <option value="Saúde e Bem-estar">Saúde e Bem-estar</option>
+        <option value="Educação">Educação</option>
+        <option value="Outros">Outros</option>
+      </select>
+
+      <label for="tipo-usuario">Tipo de Usuário</label>
+      <select id="tipo-usuario" name="tipo-usuario" required aria-required="true">
+        <option value="" disabled selected>Selecione o tipo</option>
+        <option value="prestadora">Prestadora de Serviços</option>
+        <option value="empresa">Empresa/Contratante</option>
       </select>
 
       <label for="servicos">Descrição dos serviços / produtos</label>
@@ -194,6 +203,13 @@
         valido = false;
       }
 
+      // Valida tipo de usuário
+      const tipoUsuario = form['tipo-usuario'];
+      if (!tipoUsuario.value) {
+        showError(tipoUsuario, 'Selecione o tipo de usuário.');
+        valido = false;
+      }
+
       // Valida descrição de serviços
       const servicos = form.servicos;
       if (servicos.value.trim().length < 10) {
@@ -202,8 +218,22 @@
       }
 
       if (valido) {
-        alert('Cadastro enviado com sucesso! Você pode prosseguir para o login.');
+        // Salvar dados do usuário no localStorage (simulando cadastro)
+        const novoUsuario = {
+          nome: form.nome.value.trim(),
+          email: form.email.value.trim(),
+          senha: form.senha.value,
+          segmento: form.segmento.value,
+          tipo: form['tipo-usuario'].value,
+          servicos: form.servicos.value.trim()
+        };
+        
+        // Em um sistema real, isso seria enviado para o backend
+        localStorage.setItem('ultimoCadastro', JSON.stringify(novoUsuario));
+        
+        alert('Cadastro realizado com sucesso! Você pode fazer login agora.');
         form.reset();
+        window.location.href = 'login.html';
       }
     });
 

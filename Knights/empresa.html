@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Empresa - Rede Knigths of Empress</title>
+  <title>Empresa - Rede Knights of Empress</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <style>
@@ -96,7 +96,7 @@
       align-items: center;
       gap: 24px;
       position: relative;
-      min-height: 450px; /* Altura mínima para o card */
+      min-height: 500px;
     }
 
     .profile-card {
@@ -107,7 +107,7 @@
       box-shadow: 0 6px 18px rgba(106, 13, 173, 0.2);
       text-align: center;
       transition: transform 0.3s ease, opacity 0.3s ease;
-      position: absolute; /* Para sobrepor os cards */
+      position: absolute;
       top: 32px;
       left: 50%;
       transform: translateX(-50%);
@@ -115,6 +115,12 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .profile-card:active {
+      cursor: grabbing;
     }
 
     .profile-card.swiped-left {
@@ -125,6 +131,10 @@
     .profile-card.swiped-right {
       transform: translateX(150%) rotate(15deg);
       opacity: 0;
+    }
+
+    .profile-card.dragging {
+      z-index: 10;
     }
 
     .profile-card img {
@@ -163,8 +173,8 @@
     .swipe-buttons {
       display: flex;
       gap: 24px;
-      margin-top: auto; /* Empurra os botões para o final do container */
-      z-index: 10; /* Garante que os botões fiquem acima dos cards */
+      margin-top: auto;
+      z-index: 10;
     }
 
     .swipe-button {
@@ -281,12 +291,39 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      margin: 4px;
     }
     .contact-button:hover {
       background: linear-gradient(135deg, #8b5cf6, #06b6d4);
     }
     .contact-button .material-icons {
       font-size: 20px;
+    }
+
+    .swipe-indicators {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 3rem;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .swipe-indicators.like {
+      right: 20px;
+      color: #06b6d4;
+    }
+
+    .swipe-indicators.dislike {
+      left: 20px;
+      color: #ff6b6b;
+    }
+
+    .swipe-indicators.show {
+      opacity: 1;
     }
 
     footer {
@@ -344,9 +381,9 @@
 </head>
 <body>
   <header role="banner">
-    <div class="logo">Knigths of Empress</div>
+    <div class="logo">Knights of Empress</div>
     <nav role="navigation" aria-label="Menu da Empresa">
-      <a href="Empresa.html">Descobrir Prestadoras</a>
+      <a href="#discover-providers">Descobrir Prestadoras</a>
       <a href="#minhas-curtidas">Minhas Curtidas</a>
       <a href="login.html">Sair</a>
     </nav>
@@ -356,21 +393,17 @@
     <section id="discover-providers" aria-labelledby="discover-title">
       <h1 id="discover-title">Descobrir Prestadoras de Serviço</h1>
       <div class="swipe-container">
-        <!-- Cards de perfil serão carregados aqui pelo JavaScript -->
+        <div class="swipe-indicators like">❤️</div>
+        <div class="swipe-indicators dislike">❌</div>
+        
         <div id="profile-cards-container">
-          <!-- Exemplo de card (será gerado dinamicamente) -->
-          <!--
-          <div class="profile-card">
-            <img src="https://via.placeholder.com/120" alt="Foto de Perfil de [Nome da Prestadora]" />
-            <h3>Nome da Prestadora</h3>
-            <p>Breve descrição dos serviços ou produtos oferecidos. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            <span class="segment">Segmento: Beleza</span>
-          </div>
-          -->
+          <!-- Cards serão carregados aqui -->
         </div>
+        
         <div id="no-more-profiles" class="no-more-profiles" style="display: none;">
           <p>Não há mais perfis para exibir no momento. Volte mais tarde!</p>
         </div>
+        
         <div class="swipe-buttons">
           <button class="swipe-button dislike" aria-label="Descartar perfil">
             <span class="material-icons">close</span>
@@ -385,77 +418,80 @@
     <section id="minhas-curtidas" class="liked-profiles-section" aria-labelledby="liked-title">
       <h2 id="liked-title">Prestadoras que Você Curtiu</h2>
       <div class="liked-profiles-list" id="liked-profiles-list">
-        <!-- Perfis curtidos serão carregados aqui pelo JavaScript -->
         <p id="no-liked-profiles" style="text-align: center; color: #d9ccff;">Nenhuma prestadora curtida ainda.</p>
       </div>
     </section>
   </main>
 
   <footer role="contentinfo">
-    &copy; 2025 Knigths of Empress. Todos os direitos reservados.
+    &copy; 2025 Knights of Empress. Todos os direitos reservados.
   </footer>
 
   <script>
-    // Dados simulados de prestadoras de serviço
+    // Dados das prestadoras (simulando dados vindos do cadastro)
     const allProviders = [
       {
         id: 1,
-        name: 'Maria Artesã',
-        description: 'Criação de peças de artesanato únicas e personalizadas, como joias, decoração e presentes.',
+        name: 'Maria Silva',
+        description: 'Especialista em artesanato sustentável, criando peças únicas com materiais reciclados. Trabalho com decoração, joias e presentes personalizados.',
         segment: 'Artesanato',
-        profilePic: 'https://via.placeholder.com/120/FFD700/000000?text=MA',
-        contactEmail: 'maria.artesa@example.com',
+        profilePic: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+        contactEmail: 'maria.artesanato@email.com',
         contactWhatsapp: '5511987654321'
       },
       {
         id: 2,
-        name: 'Beleza da Ana',
-        description: 'Serviços de maquiagem profissional, design de sobrancelhas e consultoria de beleza para eventos e dia a dia.',
+        name: 'Ana Beatriz',
+        description: 'Maquiadora profissional com 8 anos de experiência. Especializada em maquiagem para noivas, eventos e ensaios fotográficos.',
         segment: 'Beleza',
-        profilePic: 'https://via.placeholder.com/120/FF69B4/FFFFFF?text=BA',
-        contactEmail: 'ana.beleza@example.com',
+        profilePic: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+        contactEmail: 'ana.makeup@email.com',
         contactWhatsapp: '5511998765432'
       },
       {
         id: 3,
-        name: 'Delícias da Sônia',
-        description: 'Bolos, doces e salgados artesanais para festas e eventos. Opções veganas e sem glúten disponíveis.',
+        name: 'Carla Santos',
+        description: 'Chef especializada em doces artesanais e bolos personalizados. Atendo eventos, festas e encomendas especiais com ingredientes selecionados.',
         segment: 'Alimentação',
-        profilePic: 'https://via.placeholder.com/120/90EE90/000000?text=DS',
-        contactEmail: 'sonia.delicias@example.com',
+        profilePic: 'https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+        contactEmail: 'carla.doces@email.com',
         contactWhatsapp: '5511976543210'
       },
       {
         id: 4,
-        name: 'Tech Solutions by Laura',
-        description: 'Desenvolvimento de websites, consultoria em TI e suporte técnico para pequenas e médias empresas.',
+        name: 'Laura Tech',
+        description: 'Desenvolvedora web e consultora em transformação digital. Ajudo pequenas empresas a criar presença online e otimizar processos.',
         segment: 'Tecnologia',
-        profilePic: 'https://via.placeholder.com/120/ADD8E6/000000?text=LT',
-        contactEmail: 'laura.tech@example.com',
+        profilePic: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+        contactEmail: 'laura.dev@email.com',
         contactWhatsapp: '5511965432109'
       },
       {
         id: 5,
-        name: 'Moda Essencial',
-        description: 'Consultoria de estilo, personal shopper e criação de peças de vestuário sob medida.',
+        name: 'Fernanda Moda',
+        description: 'Personal stylist e consultora de imagem. Ajudo mulheres a descobrirem seu estilo pessoal e se sentirem confiantes.',
         segment: 'Moda',
-        profilePic: 'https://via.placeholder.com/120/DDA0DD/FFFFFF?text=ME',
-        contactEmail: 'moda.essencial@example.com',
+        profilePic: 'https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+        contactEmail: 'fernanda.style@email.com',
         contactWhatsapp: '5511954321098'
       },
       {
         id: 6,
-        name: 'Consultoria Financeira da Carla',
-        description: 'Planejamento financeiro pessoal e empresarial, gestão de investimentos e educação financeira.',
-        segment: 'Outros',
-        profilePic: 'https://via.placeholder.com/120/F0E68C/000000?text=CF',
-        contactEmail: 'carla.financas@example.com',
+        name: 'Juliana Fitness',
+        description: 'Personal trainer especializada em treinamento funcional para mulheres. Foco em saúde, bem-estar e autoestima.',
+        segment: 'Saúde e Bem-estar',
+        profilePic: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+        contactEmail: 'juliana.fitness@email.com',
         contactWhatsapp: '5511943210987'
       }
     ];
 
     let currentProviderIndex = 0;
     const likedProviders = JSON.parse(localStorage.getItem('likedProviders')) || [];
+    let isDragging = false;
+    let startX = 0;
+    let currentX = 0;
+    let currentCard = null;
 
     const profileCardsContainer = document.getElementById('profile-cards-container');
     const noMoreProfilesMessage = document.getElementById('no-more-profiles');
@@ -463,25 +499,96 @@
     const noLikedProfilesMessage = document.getElementById('no-liked-profiles');
     const dislikeButton = document.querySelector('.swipe-button.dislike');
     const likeButton = document.querySelector('.swipe-button.like');
+    const likeIndicator = document.querySelector('.swipe-indicators.like');
+    const dislikeIndicator = document.querySelector('.swipe-indicators.dislike');
 
-    function renderProfileCard(provider) {
+    function createProfileCard(provider) {
       const card = document.createElement('div');
       card.className = 'profile-card';
       card.innerHTML = `
-        <img src="${provider.profilePic}" alt="Foto de Perfil de ${provider.name}" />
+        <img src="${provider.profilePic}" alt="Foto de ${provider.name}" />
         <h3>${provider.name}</h3>
         <p>${provider.description}</p>
-        <span class="segment">Segmento: ${provider.segment}</span>
+        <span class="segment">${provider.segment}</span>
       `;
-      profileCardsContainer.appendChild(card);
+      
+      // Adicionar eventos de touch/mouse
+      card.addEventListener('mousedown', handleStart);
+      card.addEventListener('touchstart', handleStart);
+      
       return card;
+    }
+
+    function handleStart(e) {
+      isDragging = true;
+      currentCard = e.currentTarget;
+      currentCard.classList.add('dragging');
+      
+      const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+      startX = clientX;
+      
+      document.addEventListener('mousemove', handleMove);
+      document.addEventListener('touchmove', handleMove);
+      document.addEventListener('mouseup', handleEnd);
+      document.addEventListener('touchend', handleEnd);
+    }
+
+    function handleMove(e) {
+      if (!isDragging || !currentCard) return;
+      
+      e.preventDefault();
+      const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+      currentX = clientX - startX;
+      
+      const rotation = currentX * 0.1;
+      currentCard.style.transform = `translateX(calc(-50% + ${currentX}px)) rotate(${rotation}deg)`;
+      
+      // Mostrar indicadores
+      if (currentX > 50) {
+        likeIndicator.classList.add('show');
+        dislikeIndicator.classList.remove('show');
+      } else if (currentX < -50) {
+        dislikeIndicator.classList.add('show');
+        likeIndicator.classList.remove('show');
+      } else {
+        likeIndicator.classList.remove('show');
+        dislikeIndicator.classList.remove('show');
+      }
+    }
+
+    function handleEnd(e) {
+      if (!isDragging || !currentCard) return;
+      
+      isDragging = false;
+      currentCard.classList.remove('dragging');
+      
+      // Remover indicadores
+      likeIndicator.classList.remove('show');
+      dislikeIndicator.classList.remove('show');
+      
+      if (Math.abs(currentX) > 100) {
+        const action = currentX > 0 ? 'like' : 'dislike';
+        handleSwipe(action);
+      } else {
+        // Voltar à posição original
+        currentCard.style.transform = 'translateX(-50%)';
+      }
+      
+      currentCard = null;
+      currentX = 0;
+      
+      document.removeEventListener('mousemove', handleMove);
+      document.removeEventListener('touchmove', handleMove);
+      document.removeEventListener('mouseup', handleEnd);
+      document.removeEventListener('touchend', handleEnd);
     }
 
     function showNextProfile() {
       if (currentProviderIndex < allProviders.length) {
-        renderProfileCard(allProviders[currentProviderIndex]);
+        const card = createProfileCard(allProviders[currentProviderIndex]);
+        profileCardsContainer.appendChild(card);
       } else {
-        profileCardsContainer.innerHTML = ''; // Remove any remaining cards
+        profileCardsContainer.innerHTML = '';
         noMoreProfilesMessage.style.display = 'block';
         dislikeButton.style.display = 'none';
         likeButton.style.display = 'none';
@@ -489,14 +596,14 @@
     }
 
     function handleSwipe(action) {
-      const currentCard = profileCardsContainer.querySelector('.profile-card');
-      if (!currentCard) return;
+      const card = profileCardsContainer.querySelector('.profile-card');
+      if (!card) return;
 
-      currentCard.classList.add(action === 'like' ? 'swiped-right' : 'swiped-left');
+      card.classList.add(action === 'like' ? 'swiped-right' : 'swiped-left');
 
       if (action === 'like') {
         const provider = allProviders[currentProviderIndex];
-        if (!likedProviders.some(p => p.id === provider.id)) { // Evita duplicatas
+        if (!likedProviders.some(p => p.id === provider.id)) {
           likedProviders.push(provider);
           localStorage.setItem('likedProviders', JSON.stringify(likedProviders));
           renderLikedProfiles();
@@ -504,17 +611,14 @@
       }
 
       setTimeout(() => {
-        currentCard.remove();
+        card.remove();
         currentProviderIndex++;
         showNextProfile();
-      }, 300); // Tempo da transição CSS
+      }, 300);
     }
 
-    dislikeButton.addEventListener('click', () => handleSwipe('dislike'));
-    likeButton.addEventListener('click', () => handleSwipe('like'));
-
     function renderLikedProfiles() {
-      likedProfilesList.innerHTML = ''; // Limpa a lista antes de renderizar
+      likedProfilesList.innerHTML = '';
       if (likedProviders.length === 0) {
         noLikedProfilesMessage.style.display = 'block';
       } else {
@@ -523,20 +627,26 @@
           const item = document.createElement('div');
           item.className = 'liked-profile-item';
           item.innerHTML = `
-            <img src="${provider.profilePic}" alt="Foto de Perfil de ${provider.name}" />
+            <img src="${provider.profilePic}" alt="Foto de ${provider.name}" />
             <h4>${provider.name}</h4>
             <p>${provider.segment}</p>
-            <a href="mailto:${provider.contactEmail}" class="contact-button" aria-label="Enviar e-mail para ${provider.name}">
-              <span class="material-icons">email</span> E-mail
-            </a>
-            <a href="https://wa.me/${provider.contactWhatsapp}" target="_blank" rel="noopener noreferrer" class="contact-button" style="margin-top: 8px;" aria-label="Enviar mensagem via WhatsApp para ${provider.name}">
-              <span class="material-icons">chat</span> WhatsApp
-            </a>
+            <div>
+              <a href="mailto:${provider.contactEmail}" class="contact-button">
+                <span class="material-icons">email</span> E-mail
+              </a>
+              <a href="https://wa.me/${provider.contactWhatsapp}" target="_blank" rel="noopener noreferrer" class="contact-button">
+                <span class="material-icons">chat</span> WhatsApp
+              </a>
+            </div>
           `;
           likedProfilesList.appendChild(item);
         });
       }
     }
+
+    // Event listeners para os botões
+    dislikeButton.addEventListener('click', () => handleSwipe('dislike'));
+    likeButton.addEventListener('click', () => handleSwipe('like'));
 
     // Inicialização
     document.addEventListener('DOMContentLoaded', () => {
