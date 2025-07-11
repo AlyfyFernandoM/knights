@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Knigths of empress</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&700&display=swap');
+
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #6a0dad 0%, #b983ff 100%);
+      color: #f0e9ff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      overflow-x: hidden;
+      scroll-padding-top: 80px;
+    }
+
+    a {
+      color: #cbb7ff;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover,
+    a:focus {
+      color: #e6dbff;
+      outline: none;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(178, 142, 255, 0.18);
+      backdrop-filter: blur(10px);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(101,32,142,0.3);
+    }
+    
+.logo {
+  background: linear-gradient(135deg, #b983ff, #6a0dad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+    nav {
+      display: flex;
+      gap: 24px;
+    }
+
+    nav a {
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: rgba(178, 142, 255, 0.15);
+      transition: background 0.3s ease;
+    }
+    nav a:hover,
+    nav a:focus {
+      background: rgba(178, 142, 255, 0.35);
+      outline:none;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    section {
+      margin-bottom: 80px;
+      background: rgba(178, 142, 255, 0.12);
+      border-radius: 20px;
+      padding: 40px 32px;
+      box-shadow: 0 8px 24px rgba(101,32,142,0.15);
+      backdrop-filter: blur(6px);
+    }
+
+    h2 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 24px;
+      color: #e9e1ff;
+      text-align: center;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #d9ccff;
+      max-width: 750px;
+      margin: 0 auto 1.5rem auto;
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    /* Cards para módulos e funcionalidades */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      margin-top: 32px;
+    }
+
+    .card {
+      background: rgba(178, 142, 255, 0.2);
+      border-radius: 24px;
+      padding: 24px 28px;
+      box-shadow: 0 10px 30px rgba(106, 13, 173, 0.25);
+      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      cursor: default;
+      user-select: none;
+    }
+    .card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 45px rgba(178, 142, 255, 0.55);
+    }
+
+    .card h3 {
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #f0e9ff;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #d9ccff;
+      text-align: left;
+      margin-bottom: 0;
+    }
+
+    /* Rodapé */
+    footer {
+      background: rgba(101,32,142, 0.35);
+      padding: 32px 24px;
+      text-align: center;
+      color: #cdb8ff;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    /* Contato section styles */
+    #contato .contact-methods {
+      display: flex;
+      justify-content: center;
+      flex-wrap: nowrap;
+      gap: 40px;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    #contato .contact-method {
+      background: rgba(178, 142, 255, 0.2);
+      border-radius: 20px;
+      padding: 20px 28px;
+      box-shadow: 0 8px 20px rgba(101,32,142,0.2);
+      width: 220px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: default;
+      transition: background-color 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    #contato .contact-method:hover,
+    #contato .contact-method:focus-within {
+      background: rgba(178, 142, 255, 0.35);
+      outline: none;
+    }
+
+    #contato .contact-icon {
+      font-family: 'Material Icons';
+      font-style: normal;
+      font-weight: normal;
+      font-size: 32px;
+      line-height: 1;
+      user-select: none;
+      color: #cbb7ff;
+      flex-shrink: 0;
+    }
+
+    #contato .contact-icon-svg {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      fill: #cbb7ff;
+      user-select: none;
+    }
+
+    #contato .contact-link {
+      color: #cbb7ff;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-decoration: none;
+      word-break: break-word;
+      transition: color 0.3s ease;
+    }
+
+    #contato .contact-link:hover,
+    #contato .contact-link:focus {
+      color: #e6dbff;
+      outline: none;
+    }
+
+    /* Responsivo */
+    @media (max-width: 640px) {
+      header {
+        padding: 16px 20px;
+      }
+      nav {
+        gap: 16px;
+      }
+      main {
+        margin: 24px auto;
+        padding: 0 16px;
+      }
+      section {
+        padding: 32px 24px;
+        margin-bottom: 48px;
+      }
+      .cards {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      #contato .contact-methods {
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 24px;
+        max-width: 100%;
+      }
+      #contato .contact-method {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+      }
+      #contato .contact-icon,
+      #contato .contact-icon-svg {
+        font-size: 40px;
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    .logo-click-animation {
+  animation: logoClickScale 0.3s ease forwards;
+}
+
+@keyframes logoClickScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.85);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+  </style>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+</head>
+<body>
+  <header role="banner">
+    <div class="logo" tabindex="0" aria-label="Rede Knigths of empress">Knigths of empress</div>
+    <nav role="navigation" aria-label="Menu principal">
+      <a href="#sobre" tabindex="0">Sobre</a>
+      <a href="#funcionalidades" tabindex="0">Funcionalidades</a>
+      <a href="#contato" tabindex="0">Contato</a>
+      <a href="tela-cadastro.html" tabindex="0" aria-label="Faça seu cadastro">Cadastro</a>
+      <a href="login.html" tabindex="0" aria-label="Faça seu login">Login</a>
+    </nav>
+  </header>
+
+  <main role="main">
+    <section id="sobre" aria-labelledby="titulo-sobre">
+      <h2 id="titulo-sobre">Bem-vinda à Knigths of empress</h2>
+      <p>
+        Um ecossistema digital colaborativo para mulheres empreendedoras que buscam apoio, visibilidade, parcerias e desenvolvimento. Nossa plataforma conecta você às melhores oportunidades e fomenta a economia solidária.
+      </p>
+      <p>
+        Com uma interface intuitiva e acolhedora, criamos um ambiente seguro e inspirador para fortalecer negócios femininos de diversos segmentos.
+      </p>
+    </section>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const logo = document.querySelector('.logo');
+        logo.style.cursor = 'pointer'; // muda o cursor para indicar que é clicável
+    
+        logo.addEventListener('click', () => {
+          // faz a rolagem suave até o topo
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+          // adiciona classe para animar a logo
+          logo.classList.add('logo-click-animation');
+    
+          // remove a classe depois de 300ms (duração da animação)
+          setTimeout(() => {
+            logo.classList.remove('logo-click-animation');
+          }, 300);
+        });
+      });
+    </script>
+    
+
+    <section id="funcionalidades" aria-labelledby="titulo-funcionalidades">
+      <h2 id="titulo-funcionalidades">Funcionalidades Principais</h2>
+      <div class="cards">
+        <article class="card" role="region" aria-labelledby="card1-title" tabindex="0">
+          <h3 id="card1-title">Cadastro & Autenticação</h3>
+          <p>Registro fácil e seguro, com gerenciamento de perfis e autenticação baseada em tokens.</p>
+        </article>
+        <article class="card" role="region" aria-labelledby="card2-title" tabindex="0">
+          <h3 id="card2-title">Sistema de Descoberta</h3>
+          <p>Funcionalidade tipo "swipe" para explorar prestadoras de serviço e encontrar as melhores parcerias.</p>
+        </article>
+        <article class="card" role="region" aria-labelledby="card3-title" tabindex="0">
+          <h3 id="card3-title">Comunicação Inicial</h3>
+          <p>Botão para iniciar contato via WhatsApp ou e-mail, facilitando a conexão entre usuárias.</p>
+        </article>
+        <article class="card" role="region" aria-labelledby="card4-title" tabindex="0">
+          <h3 id="card4-title">Agenda & Eventos</h3>
+          <p>Acesso a cursos, oficinas e oportunidades para capacitação e crescimento pessoal e profissional.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contato" aria-labelledby="titulo-contato">
+      <h2 id="titulo-contato">Contato</h2>
+      <div class="contact-methods">
+        <div class="contact-method" tabindex="0" role="region" aria-label="Enviar e-mail">
+          <span class="contact-icon material-icons" aria-hidden="true">email</span>
+          <a href="mailto:mauro.claro@eniac.edu.br" class="contact-link" aria-label="Enviar email para mauro.claro@eniac.edu.br" tabindex="0">mauro.claro@eniac.edu.br</a>
+        </div>
+        <div class="contact-method" tabindex="0" role="region" aria-label="Contato via WhatsApp">
+          <span class="contact-icon material-icons" aria-hidden="true">chat</span>
+          <a href="https://wa.me/5511999963175" target="_blank" rel="noopener noreferrer" class="contact-link" aria-label="Enviar mensagem via WhatsApp para 55 11 99996-3175" tabindex="0">WhatsApp: +55 11 99996-3175</a>
+        </div>
+        <div class="contact-method" tabindex="0" role="region" aria-label="Instagram">
+          <svg class="contact-icon-svg" aria-hidden="true" focusable="false" viewBox="0 0 24 24" >
+            <path d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5a4.25 4.25 0 00-4.221 4.002l-.014.248v8.5a4.25 4.25 0 004.002 4.221l.219.014h8.5a4.25 4.25 0 004.221-4.002l.014-.219v-8.5a4.25 4.25 0 00-4.002-4.221l-.248-.014h-8.5zM12 7a5 5 0 110 10 5 5 0 010-10zm0 1.5a3.5 3.5 0 10.001 7.001A3.5 3.5 0 0012 8.5zm5.5-.75a1 1 0 110 2 1 1 0 010-2z"/>
+          </svg>
+          <a href="https://www.instagram.com/Knigthsofempress" target="_blank" rel="noopener noreferrer" class="contact-link" aria-label="Visitar Instagram Knigths of empress " tabindex="0">@Knigthsofempress </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    &copy; 2025 Knigths of empress . Todos os direitos reservados.
+  </footer>
+</body>
+</html>
+
+

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prestadora - Rede Knigths of Empress</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #6a0dad 0%, #b983ff 100%);
+      color: #f0e9ff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1200px;
+      background: rgba(178, 142, 255, 0.18);
+      backdrop-filter: blur(10px);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(101,32,142,0.3);
+      border-radius: 16px;
+      margin-bottom: 32px;
+    }
+
+    .logo {
+      background: linear-gradient(135deg, #b983ff, #6a0dad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    nav a {
+      color: #cbb7ff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: rgba(178, 142, 255, 0.15);
+      transition: background 0.3s ease;
+      margin-left: 16px;
+    }
+    nav a:hover, nav a:focus {
+      background: rgba(178, 142, 255, 0.35);
+      outline: none;
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    h1, h2 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      color: white;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    section {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 32px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Estilos para a seção de Empresas que Curtiram */
+    .liked-by-companies-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .company-item {
+      background: rgba(178, 142, 255, 0.25);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(106, 13, 173, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .company-item img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 12px;
+      border: 2px solid #b983ff;
+    }
+
+    .company-item h3 {
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: #f0e9ff;
+      margin-bottom: 8px;
+    }
+
+    .company-item p {
+      font-size: 0.95rem;
+      color: #d9ccff;
+      margin-bottom: 12px;
+    }
+
+    .contact-button {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .contact-button:hover {
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+    }
+    .contact-button .material-icons {
+      font-size: 20px;
+    }
+
+    /* Estilos para a seção de Edição de Perfil */
+    .edit-profile-form label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      margin-top: 16px;
+      color: #e0e0e0;
+    }
+
+    .edit-profile-form input,
+    .edit-profile-form select,
+    .edit-profile-form textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      outline-offset: 4px;
+      outline-color: transparent;
+      transition: outline-color 0.25s ease;
+      font-family: 'Inter', sans-serif;
+      background: rgba(255,255,255,0.07);
+      color: white;
+    }
+
+    .edit-profile-form input:focus,
+    .edit-profile-form select:focus,
+    .edit-profile-form textarea:focus {
+      outline-color: #8b5cf6;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .edit-profile-form textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .edit-profile-form button {
+      margin-top: 32px;
+      width: 100%;
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+      padding: 14px 0;
+      border: none;
+      border-radius: 16px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 8px 20px rgba(107, 99, 246, 0.4);
+    }
+
+    .edit-profile-form button:hover,
+    .edit-profile-form button:focus {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      box-shadow: 0 12px 30px rgba(107, 99, 246, 0.6);
+      outline: none;
+    }
+
+    .error-message {
+      margin-top: 8px;
+      color: #ff6b6b;
+      font-size: 0.9rem;
+    }
+
+    .profile-pic-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 16px;
+      margin-bottom: 24px;
+    }
+
+    .profile-pic-upload img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #b983ff;
+      margin-bottom: 12px;
+    }
+
+    .profile-pic-upload input[type="file"] {
+      display: none; /* Esconde o input de arquivo padrão */
+    }
+
+    .profile-pic-upload label.upload-button {
+      background: rgba(178, 142, 255, 0.3);
+      padding: 8px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-weight: 600;
+      color: #e0e0e0;
+    }
+
+    .profile-pic-upload label.upload-button:hover {
+      background: rgba(178, 142, 255, 0.5);
+    }
+
+    footer {
+      margin-top: 40px;
+      background: rgba(101,32,142, 0.35);
+      padding: 24px;
+      text-align: center;
+      color: #cdb8ff;
+      font-size: 0.9rem;
+      width: 100%;
+      max-width: 1200px;
+      border-radius: 16px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px 20px;
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      nav a {
+        margin: 0;
+      }
+      h1, h2 {
+        font-size: 2rem;
+      }
+      section {
+        padding: 24px;
+      }
+      .liked-by-companies-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header role="banner">
+    <div class="logo">Knigths of Empress</div>
+    <nav role="navigation" aria-label="Menu da Prestadora">
+      <a href="#companies-liked-me">Empresas que me Curtiram</a>
+      <a href="#edit-profile">Editar Meu Perfil</a>
+      <a href="login.html">Sair</a>
+    </nav>
+  </header>
+
+  <main role="main">
+    <section id="companies-liked-me" aria-labelledby="liked-by-title">
+      <h2 id="liked-by-title">Empresas que Curtiram Meu Perfil</h2>
+      <div class="liked-by-companies-list" id="liked-by-companies-list">
+        <!-- Empresas que curtiram serão carregadas aqui pelo JavaScript -->
+        <p id="no-companies-liked" style="text-align: center; color: #d9ccff;">Nenhuma empresa curtiu seu perfil ainda.</p>
+      </div>
+    </section>
+
+    <section id="edit-profile" aria-labelledby="edit-profile-title">
+      <h2 id="edit-profile-title">Editar Meu Perfil</h2>
+      <form id="editProfileForm" class="edit-profile-form" novalidate>
+        <div class="profile-pic-upload">
+          <img id="currentProfilePic" src="https://via.placeholder.com/120/CCCCCC/000000?text=Sua+Foto" alt="Sua Foto de Perfil" />
+          <input type="file" id="profilePicInput" accept="image/*" />
+          <label for="profilePicInput" class="upload-button">Alterar Foto</label>
+        </div>
+
+        <label for="providerName">Nome da Prestadora / Negócio</label>
+        <input type="text" id="providerName" name="providerName" placeholder="Seu nome ou nome do seu negócio" required aria-required="true" />
+
+        <label for="providerDescription">Descrição dos Serviços / Produtos</label>
+        <textarea id="providerDescription" name="providerDescription" placeholder="Conte sobre seus serviços ou produtos (mínimo 10 caracteres)" required aria-required="true"></textarea>
+
+        <label for="providerSegment">Segmento</label>
+        <select id="providerSegment" name="providerSegment" required aria-required="true">
+          <option value="" disabled selected>Selecione o segmento</option>
+          <option value="artesanato">Artesanato</option>
+          <option value="beleza">Beleza</option>
+          <option value="alimentacao">Alimentação</option>
+          <option value="tecnologia">Tecnologia</option>
+          <option value="moda">Moda</option>
+          <option value="outros">Outros</option>
+        </select>
+
+        <label for="contactEmail">E-mail de Contato</label>
+        <input type="email" id="contactEmail" name="contactEmail" placeholder="seu.email@example.com" required aria-required="true" />
+
+        <label for="contactWhatsapp">WhatsApp de Contato (com DDD)</label>
+        <input type="tel" id="contactWhatsapp" name="contactWhatsapp" placeholder="Ex: 5511999998888" pattern="[0-9]{10,15}" title="Apenas números, com DDD (ex: 5511999998888)" required aria-required="true" />
+
+        <button type="submit" aria-label="Salvar alterações do perfil">Salvar Alterações</button>
+      </form>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    &copy; 2025 Knigths of Empress. Todos os direitos reservados.
+  </footer>
+
+  <script>
+    // Dados simulados da prestadora logada (no sistema real, viria do backend)
+    let currentProviderData = {
+      id: 101, // ID da prestadora logada
+      name: 'Minha Empresa de Artesanato',
+      description: 'Crio peças de artesanato exclusivas e personalizadas, com foco em sustentabilidade e design moderno.',
+      segment: 'artesanato',
+      profilePic: 'https://via.placeholder.com/120/FFD700/000000?text=MP', // URL da foto de perfil
+      contactEmail: 'minha.empresa@example.com',
+      contactWhatsapp: '5511912345678'
+    };
+
+    // Dados simulados de empresas que curtiram o perfil desta prestadora
+    // No sistema real, isso seria uma consulta ao backend: "quais empresas curtiram meu ID?"
+    const companiesThatLikedMe = [
+      {
+        id: 201,
+        name: 'Loja de Decoração Moderna',
+        description: 'Buscamos artesãos para parcerias em produtos exclusivos.',
+        logo: 'https://via.placeholder.com/80/AEC6CF/000000?text=LDM',
+        contactEmail: 'contato@lojadecor.com',
+        contactWhatsapp: '5511987651234'
+      },
+      {
+        id: 202,
+        name: 'Galeria de Arte Urbana',
+        description: 'Interessados em peças de arte contemporânea e urbana.',
+        logo: 'https://via.placeholder.com/80/FFB347/000000?text=GAU',
+        contactEmail: 'info@galeriaarte.com',
+        contactWhatsapp: '5511998765432'
+      }
+    ];
+
+    const likedByCompaniesList = document.getElementById('liked-by-companies-list');
+    const noCompaniesLikedMessage = document.getElementById('no-companies-liked');
+
+    const editProfileForm = document.getElementById('editProfileForm');
+    const currentProfilePic = document.getElementById('currentProfilePic');
+    const profilePicInput = document.getElementById('profilePicInput');
+    const providerNameInput = document.getElementById('providerName');
+    const providerDescriptionInput = document.getElementById('providerDescription');
+    const providerSegmentSelect = document.getElementById('providerSegment');
+    const contactEmailInput = document.getElementById('contactEmail');
+    const contactWhatsappInput = document.getElementById('contactWhatsapp');
+
+    // Função para renderizar as empresas que curtiram
+    function renderCompaniesThatLikedMe() {
+      likedByCompaniesList.innerHTML = ''; // Limpa a lista antes de renderizar
+      if (companiesThatLikedMe.length === 0) {
+        noCompaniesLikedMessage.style.display = 'block';
+      } else {
+        noCompaniesLikedMessage.style.display = 'none';
+        companiesThatLikedMe.forEach(company => {
+          const item = document.createElement('div');
+          item.className = 'company-item';
+          item.innerHTML = `
+            <img src="${company.logo}" alt="Logo da ${company.name}" />
+            <h3>${company.name}</h3>
+            <p>${company.description}</p>
+            <a href="mailto:${company.contactEmail}" class="contact-button" aria-label="Enviar e-mail para ${company.name}">
+              <span class="material-icons">email</span> E-mail
+            </a>
+            <a href="https://wa.me/${company.contactWhatsapp}" target="_blank" rel="noopener noreferrer" class="contact-button" style="margin-top: 8px;" aria-label="Enviar mensagem via WhatsApp para ${company.name}">
+              <span class="material-icons">chat</span> WhatsApp
+            </a>
+          `;
+          likedByCompaniesList.appendChild(item);
+        });
+      }
+    }
+
+    // Função para carregar os dados atuais da prestadora no formulário
+    function loadProviderData() {
+      currentProfilePic.src = currentProviderData.profilePic;
+      providerNameInput.value = currentProviderData.name;
+      providerDescriptionInput.value = currentProviderData.description;
+      providerSegmentSelect.value = currentProviderData.segment;
+      contactEmailInput.value = currentProviderData.contactEmail;
+      contactWhatsappInput.value = currentProviderData.contactWhatsapp;
+    }
+
+    // Função para exibir mensagens de erro no formulário
+    function showError(element, message) {
+      const error = document.createElement('div');
+      error.className = 'error-message';
+      error.textContent = message;
+      element.insertAdjacentElement('afterend', error);
+      element.focus();
+    }
+
+    // Event listener para o envio do formulário de edição
+    editProfileForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Remover mensagens de erro anteriores
+      const errors = editProfileForm.querySelectorAll('.error-message');
+      errors.forEach(e => e.remove());
+
+      let valido = true;
+
+      // Validações
+      if (providerNameInput.value.trim().length < 3) {
+        showError(providerNameInput, 'Por favor, insira o nome do seu negócio.');
+        valido = false;
+      }
+      if (providerDescriptionInput.value.trim().length < 10) {
+        showError(providerDescriptionInput, 'A descrição deve ter no mínimo 10 caracteres.');
+        valido = false;
+      }
+      if (!providerSegmentSelect.value) {
+        showError(providerSegmentSelect, 'Selecione um segmento.');
+        valido = false;
+      }
+      const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!reEmail.test(contactEmailInput.value.trim())) {
+        showError(contactEmailInput, 'Por favor, insira um e-mail válido.');
+        valido = false;
+      }
+      const reWhatsapp = /^[0-9]{10,15}$/; // Ex: 5511999998888
+      if (!reWhatsapp.test(contactWhatsappInput.value.trim())) {
+        showError(contactWhatsappInput, 'Por favor, insira um número de WhatsApp válido (apenas números, com DDD).');
+        valido = false;
+      }
+
+      if (valido) {
+        // Atualiza os dados da prestadora (no sistema real, enviaria para o backend)
+        currentProviderData.name = providerNameInput.value.trim();
+        currentProviderData.description = providerDescriptionInput.value.trim();
+        currentProviderData.segment = providerSegmentSelect.value;
+        currentProviderData.contactEmail = contactEmailInput.value.trim();
+        currentProviderData.contactWhatsapp = contactWhatsappInput.value.trim();
+
+        alert('Perfil atualizado com sucesso!');
+        // Aqui você pode adicionar lógica para enviar os dados para o backend
+      }
+    });
+
+    // Event listener para a mudança da foto de perfil
+    profilePicInput.addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          currentProfilePic.src = e.target.result;
+          // No sistema real, você enviaria esta imagem para o servidor
+          // e atualizaria currentProviderData.profilePic com a URL retornada.
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCompaniesThatLikedMe();
+      loadProviderData();
+    });
+  </script>
+</body>
+</html>

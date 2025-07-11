@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Rede Empreendedoras</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .login-container {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 32px 40px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 24px;
+      color: white;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      margin-top: 16px;
+      color: #e0e0e0;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      outline-offset: 4px;
+      outline-color: transparent;
+      transition: outline-color 0.25s ease;
+      font-family: 'Inter', sans-serif;
+      background: rgba(255,255,255,0.07);
+      color: white;
+    }
+
+    input:focus {
+      outline-color: #8b5cf6;
+      background: rgba(255,255,255,0.2);
+    }
+
+    button {
+      margin-top: 32px;
+      width: 100%;
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+      padding: 14px 0;
+      border: none;
+      border-radius: 16px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 8px 20px rgba(107, 99, 246, 0.4);
+    }
+
+    button:hover,
+    button:focus {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      box-shadow: 0 12px 30px rgba(107, 99, 246, 0.6);
+      outline: none;
+    }
+
+    .error-message {
+      margin-top: 8px;
+      color: #ff6b6b;
+      font-size: 0.9rem;
+    }
+
+    .signup-link {
+      display: block;
+      margin-top: 24px;
+      text-align: center;
+      color: #c0c0c0;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: underline;
+      user-select: none;
+    }
+
+    .signup-link:hover,
+    .signup-link:focus {
+      color: #e0e0e0;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="login-container" role="main" aria-labelledby="titulo-login">
+    <h2 id="titulo-login">Login</h2>
+    <form id="loginForm" novalidate>
+      <label for="login-email">E-mail</label>
+      <input type="email" id="login-email" name="login-email" placeholder="exemplo@email.com" required aria-required="true" />
+
+      <label for="login-senha">Senha</label>
+      <input type="password" id="login-senha" name="login-senha" placeholder="Sua senha" required aria-required="true" />
+
+      <button type="submit" aria-label="Enviar formulário de login">Entrar</button>
+    </form>
+   <a href="tela-cadastro.html" class="signup-link" aria-label="Ir para cadastro">Ainda não tem cadastro? Faça seu cadastro</a>
+
+  </main>
+
+  <script>
+    // Usuários cadastrados simulados (no sistema real isso viria do backend)
+    const usuariosCadastrados = [
+      { email: 'usuario@example.com', senha: '123456', nome: 'Usuária Teste' }
+    ];
+
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      clearErrors(loginForm);
+
+      const email = loginForm['login-email'].value.trim();
+      const senha = loginForm['login-senha'].value;
+
+      let valido = true;
+
+      if (!email) {
+        showError(loginForm['login-email'], 'Por favor, insira seu e-mail.');
+        valido = false;
+      }
+      if (!senha) {
+        showError(loginForm['login-senha'], 'Por favor, insira sua senha.');
+        valido = false;
+      }
+
+      if (!valido) return;
+
+      const usuario = usuariosCadastrados.find(u => u.email === email && u.senha === senha);
+      if (usuario) {
+        alert(`Bem-vinda, ${usuario.nome}! Login efetuado com sucesso.`);
+        loginForm.reset();
+        // Aqui você pode redirecionar para página principal ou painel do usuário
+      } else {
+        showError(loginForm['login-senha'], 'E-mail ou senha inválidos.');
+      }
+    });
+
+    function clearErrors(form) {
+      const errors = form.querySelectorAll('.error-message');
+      errors.forEach(e => e.remove());
+    }
+
+    function showError(element, message) {
+      const error = document.createElement('div');
+      error.className = 'error-message';
+      error.textContent = message;
+      element.insertAdjacentElement('afterend', error);
+      element.focus();
+    }
+  </script>
+</body>
+</html>

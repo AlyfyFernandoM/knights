@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro - Rede Empreendedoras</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    /* Container do formulário */
+    .form-container {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 32px 40px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .form-container h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: white;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      margin-top: 16px;
+      color: #e0e0e0;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      outline-offset: 4px;
+      outline-color: transparent;
+      transition: outline-color 0.25s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline-color: #8b5cf6;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      margin-top: 32px;
+      width: 100%;
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+      padding: 14px 0;
+      border: none;
+      border-radius: 16px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 8px 20px rgba(107, 99, 246, 0.4);
+    }
+
+    button:hover,
+    button:focus {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      box-shadow: 0 12px 30px rgba(107, 99, 246, 0.6);
+      outline: none;
+    }
+
+    .error-message {
+      margin-top: 8px;
+      color: #ff6b6b;
+      font-size: 0.9rem;
+    }
+
+    /* Link para login */
+    .login-link {
+      display: block;
+      margin-top: 24px;
+      text-align: center;
+      color: #c0c0c0;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .login-link:hover,
+    .login-link:focus {
+      color: #e0e0e0;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="form-container" role="main" aria-labelledby="titulo-cadastro">
+    <h1 id="titulo-cadastro">Cadastro de Empreendedora</h1>
+    <form id="cadastroForm" novalidate>
+      <label for="nome">Nome completo</label>
+      <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required aria-required="true" />
+
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" placeholder="exemplo@email.com" required aria-required="true" />
+
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" name="senha" placeholder="Senha (mínimo 6 caracteres)" required minlength="6" aria-required="true" />
+
+      <label for="segmento">Segmento</label>
+      <select id="segmento" name="segmento" required aria-required="true">
+        <option value="" disabled selected>Selecione o segmento</option>
+        <option value="artesanato">Artesanato</option>
+        <option value="beleza">Beleza</option>
+        <option value="alimentacao">Alimentação</option>
+        <option value="tecnologia">Tecnologia</option>
+        <option value="moda">Moda</option>
+        <option value="outros">Outros</option>
+      </select>
+
+      <label for="servicos">Descrição dos serviços / produtos</label>
+      <textarea id="servicos" name="servicos" placeholder="Conte sobre seus serviços ou produtos" required aria-required="true"></textarea>
+
+      <button type="submit" aria-label="Enviar formulário de cadastro">Cadastrar</button>
+    </form>
+    <a href="login.html" class="login-link" tabindex="0">Já tem cadastro? Faça login</a>
+  </main>
+
+  <script>
+    const form = document.getElementById('cadastroForm');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Remover mensagens anteriores
+      const errors = form.querySelectorAll('.error-message');
+      errors.forEach(e => e.remove());
+
+      let valido = true;
+
+      // Valida nome
+      const nome = form.nome;
+      if (nome.value.trim().length < 3) {
+        showError(nome, 'Por favor, insira seu nome completo.');
+        valido = false;
+      }
+
+      // Valida email
+      const email = form.email;
+      const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!reEmail.test(email.value.trim())) {
+        showError(email, 'Por favor, insira um e-mail válido.');
+        valido = false;
+      }
+
+      // Valida senha
+      const senha = form.senha;
+      if (senha.value.length < 6) {
+        showError(senha, 'A senha deve ter no mínimo 6 caracteres.');
+        valido = false;
+      }
+
+      // Valida segmento
+      const segmento = form.segmento;
+      if (!segmento.value) {
+        showError(segmento, 'Selecione um segmento.');
+        valido = false;
+      }
+
+      // Valida descrição de serviços
+      const servicos = form.servicos;
+      if (servicos.value.trim().length < 10) {
+        showError(servicos, 'Por favor, insira uma descrição detalhada (mínimo 10 caracteres).');
+        valido = false;
+      }
+
+      if (valido) {
+        alert('Cadastro enviado com sucesso! Você pode prosseguir para o login.');
+        form.reset();
+      }
+    });
+
+    function showError(element, message) {
+      const error = document.createElement('div');
+      error.className = 'error-message';
+      error.textContent = message;
+      element.insertAdjacentElement('afterend', error);
+      element.focus();
+    }
+  </script>
+</body>
+</html>
+

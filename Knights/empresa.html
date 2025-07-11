@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Empresa - Rede Knigths of Empress</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #6a0dad 0%, #b983ff 100%);
+      color: #f0e9ff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1200px;
+      background: rgba(178, 142, 255, 0.18);
+      backdrop-filter: blur(10px);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(101,32,142,0.3);
+      border-radius: 16px;
+      margin-bottom: 32px;
+    }
+
+    .logo {
+      background: linear-gradient(135deg, #b983ff, #6a0dad);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    nav a {
+      color: #cbb7ff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: rgba(178, 142, 255, 0.15);
+      transition: background 0.3s ease;
+      margin-left: 16px;
+    }
+    nav a:hover, nav a:focus {
+      background: rgba(178, 142, 255, 0.35);
+      outline: none;
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      color: white;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .swipe-container {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 32px;
+      width: 100%;
+      max-width: 450px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      position: relative;
+      min-height: 450px; /* Altura mínima para o card */
+    }
+
+    .profile-card {
+      background: rgba(178, 142, 255, 0.25);
+      border-radius: 20px;
+      padding: 24px;
+      width: 100%;
+      box-shadow: 0 6px 18px rgba(106, 13, 173, 0.2);
+      text-align: center;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      position: absolute; /* Para sobrepor os cards */
+      top: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .profile-card.swiped-left {
+      transform: translateX(-150%) rotate(-15deg);
+      opacity: 0;
+    }
+
+    .profile-card.swiped-right {
+      transform: translateX(150%) rotate(15deg);
+      opacity: 0;
+    }
+
+    .profile-card img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 16px auto;
+      border: 3px solid #b983ff;
+    }
+
+    .profile-card h3 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #f0e9ff;
+      margin-bottom: 8px;
+    }
+
+    .profile-card p {
+      font-size: 1rem;
+      color: #d9ccff;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .profile-card .segment {
+      font-weight: 600;
+      color: #cbb7ff;
+      background: rgba(178, 142, 255, 0.3);
+      padding: 6px 12px;
+      border-radius: 8px;
+      display: inline-block;
+      margin-top: 8px;
+    }
+
+    .swipe-buttons {
+      display: flex;
+      gap: 24px;
+      margin-top: auto; /* Empurra os botões para o final do container */
+      z-index: 10; /* Garante que os botões fiquem acima dos cards */
+    }
+
+    .swipe-button {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .swipe-button:hover {
+      transform: translateY(-3px);
+    }
+
+    .swipe-button.dislike {
+      background: linear-gradient(135deg, #ff6b6b, #e63946);
+    }
+    .swipe-button.dislike:hover {
+      background: linear-gradient(135deg, #e63946, #ff6b6b);
+    }
+
+    .swipe-button.like {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+    }
+    .swipe-button.like:hover {
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+    }
+
+    .swipe-button .material-icons {
+      font-size: 36px;
+      color: white;
+    }
+
+    .no-more-profiles {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #d9ccff;
+      margin-top: 40px;
+    }
+
+    .liked-profiles-section {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 32px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      margin-top: 40px;
+    }
+
+    .liked-profiles-section h2 {
+      font-weight: 700;
+      font-size: 2rem;
+      color: white;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .liked-profiles-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .liked-profile-item {
+      background: rgba(178, 142, 255, 0.25);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(106, 13, 173, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .liked-profile-item img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 12px;
+      border: 2px solid #b983ff;
+    }
+
+    .liked-profile-item h4 {
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: #f0e9ff;
+      margin-bottom: 8px;
+    }
+
+    .liked-profile-item p {
+      font-size: 0.95rem;
+      color: #d9ccff;
+      margin-bottom: 12px;
+    }
+
+    .contact-button {
+      background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .contact-button:hover {
+      background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+    }
+    .contact-button .material-icons {
+      font-size: 20px;
+    }
+
+    footer {
+      margin-top: 40px;
+      background: rgba(101,32,142, 0.35);
+      padding: 24px;
+      text-align: center;
+      color: #cdb8ff;
+      font-size: 0.9rem;
+      width: 100%;
+      max-width: 1200px;
+      border-radius: 16px;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px 20px;
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      nav a {
+        margin: 0;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .swipe-container {
+        padding: 24px;
+      }
+      .profile-card h3 {
+        font-size: 1.5rem;
+      }
+      .swipe-buttons {
+        gap: 16px;
+      }
+      .swipe-button {
+        width: 50px;
+        height: 50px;
+      }
+      .swipe-button .material-icons {
+        font-size: 30px;
+      }
+      .liked-profiles-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header role="banner">
+    <div class="logo">Knigths of Empress</div>
+    <nav role="navigation" aria-label="Menu da Empresa">
+      <a href="Empresa.html">Descobrir Prestadoras</a>
+      <a href="#minhas-curtidas">Minhas Curtidas</a>
+      <a href="login.html">Sair</a>
+    </nav>
+  </header>
+
+  <main role="main">
+    <section id="discover-providers" aria-labelledby="discover-title">
+      <h1 id="discover-title">Descobrir Prestadoras de Serviço</h1>
+      <div class="swipe-container">
+        <!-- Cards de perfil serão carregados aqui pelo JavaScript -->
+        <div id="profile-cards-container">
+          <!-- Exemplo de card (será gerado dinamicamente) -->
+          <!--
+          <div class="profile-card">
+            <img src="https://via.placeholder.com/120" alt="Foto de Perfil de [Nome da Prestadora]" />
+            <h3>Nome da Prestadora</h3>
+            <p>Breve descrição dos serviços ou produtos oferecidos. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <span class="segment">Segmento: Beleza</span>
+          </div>
+          -->
+        </div>
+        <div id="no-more-profiles" class="no-more-profiles" style="display: none;">
+          <p>Não há mais perfis para exibir no momento. Volte mais tarde!</p>
+        </div>
+        <div class="swipe-buttons">
+          <button class="swipe-button dislike" aria-label="Descartar perfil">
+            <span class="material-icons">close</span>
+          </button>
+          <button class="swipe-button like" aria-label="Curtir perfil">
+            <span class="material-icons">favorite</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="minhas-curtidas" class="liked-profiles-section" aria-labelledby="liked-title">
+      <h2 id="liked-title">Prestadoras que Você Curtiu</h2>
+      <div class="liked-profiles-list" id="liked-profiles-list">
+        <!-- Perfis curtidos serão carregados aqui pelo JavaScript -->
+        <p id="no-liked-profiles" style="text-align: center; color: #d9ccff;">Nenhuma prestadora curtida ainda.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    &copy; 2025 Knigths of Empress. Todos os direitos reservados.
+  </footer>
+
+  <script>
+    // Dados simulados de prestadoras de serviço
+    const allProviders = [
+      {
+        id: 1,
+        name: 'Maria Artesã',
+        description: 'Criação de peças de artesanato únicas e personalizadas, como joias, decoração e presentes.',
+        segment: 'Artesanato',
+        profilePic: 'https://via.placeholder.com/120/FFD700/000000?text=MA',
+        contactEmail: 'maria.artesa@example.com',
+        contactWhatsapp: '5511987654321'
+      },
+      {
+        id: 2,
+        name: 'Beleza da Ana',
+        description: 'Serviços de maquiagem profissional, design de sobrancelhas e consultoria de beleza para eventos e dia a dia.',
+        segment: 'Beleza',
+        profilePic: 'https://via.placeholder.com/120/FF69B4/FFFFFF?text=BA',
+        contactEmail: 'ana.beleza@example.com',
+        contactWhatsapp: '5511998765432'
+      },
+      {
+        id: 3,
+        name: 'Delícias da Sônia',
+        description: 'Bolos, doces e salgados artesanais para festas e eventos. Opções veganas e sem glúten disponíveis.',
+        segment: 'Alimentação',
+        profilePic: 'https://via.placeholder.com/120/90EE90/000000?text=DS',
+        contactEmail: 'sonia.delicias@example.com',
+        contactWhatsapp: '5511976543210'
+      },
+      {
+        id: 4,
+        name: 'Tech Solutions by Laura',
+        description: 'Desenvolvimento de websites, consultoria em TI e suporte técnico para pequenas e médias empresas.',
+        segment: 'Tecnologia',
+        profilePic: 'https://via.placeholder.com/120/ADD8E6/000000?text=LT',
+        contactEmail: 'laura.tech@example.com',
+        contactWhatsapp: '5511965432109'
+      },
+      {
+        id: 5,
+        name: 'Moda Essencial',
+        description: 'Consultoria de estilo, personal shopper e criação de peças de vestuário sob medida.',
+        segment: 'Moda',
+        profilePic: 'https://via.placeholder.com/120/DDA0DD/FFFFFF?text=ME',
+        contactEmail: 'moda.essencial@example.com',
+        contactWhatsapp: '5511954321098'
+      },
+      {
+        id: 6,
+        name: 'Consultoria Financeira da Carla',
+        description: 'Planejamento financeiro pessoal e empresarial, gestão de investimentos e educação financeira.',
+        segment: 'Outros',
+        profilePic: 'https://via.placeholder.com/120/F0E68C/000000?text=CF',
+        contactEmail: 'carla.financas@example.com',
+        contactWhatsapp: '5511943210987'
+      }
+    ];
+
+    let currentProviderIndex = 0;
+    const likedProviders = JSON.parse(localStorage.getItem('likedProviders')) || [];
+
+    const profileCardsContainer = document.getElementById('profile-cards-container');
+    const noMoreProfilesMessage = document.getElementById('no-more-profiles');
+    const likedProfilesList = document.getElementById('liked-profiles-list');
+    const noLikedProfilesMessage = document.getElementById('no-liked-profiles');
+    const dislikeButton = document.querySelector('.swipe-button.dislike');
+    const likeButton = document.querySelector('.swipe-button.like');
+
+    function renderProfileCard(provider) {
+      const card = document.createElement('div');
+      card.className = 'profile-card';
+      card.innerHTML = `
+        <img src="${provider.profilePic}" alt="Foto de Perfil de ${provider.name}" />
+        <h3>${provider.name}</h3>
+        <p>${provider.description}</p>
+        <span class="segment">Segmento: ${provider.segment}</span>
+      `;
+      profileCardsContainer.appendChild(card);
+      return card;
+    }
+
+    function showNextProfile() {
+      if (currentProviderIndex < allProviders.length) {
+        renderProfileCard(allProviders[currentProviderIndex]);
+      } else {
+        profileCardsContainer.innerHTML = ''; // Remove any remaining cards
+        noMoreProfilesMessage.style.display = 'block';
+        dislikeButton.style.display = 'none';
+        likeButton.style.display = 'none';
+      }
+    }
+
+    function handleSwipe(action) {
+      const currentCard = profileCardsContainer.querySelector('.profile-card');
+      if (!currentCard) return;
+
+      currentCard.classList.add(action === 'like' ? 'swiped-right' : 'swiped-left');
+
+      if (action === 'like') {
+        const provider = allProviders[currentProviderIndex];
+        if (!likedProviders.some(p => p.id === provider.id)) { // Evita duplicatas
+          likedProviders.push(provider);
+          localStorage.setItem('likedProviders', JSON.stringify(likedProviders));
+          renderLikedProfiles();
+        }
+      }
+
+      setTimeout(() => {
+        currentCard.remove();
+        currentProviderIndex++;
+        showNextProfile();
+      }, 300); // Tempo da transição CSS
+    }
+
+    dislikeButton.addEventListener('click', () => handleSwipe('dislike'));
+    likeButton.addEventListener('click', () => handleSwipe('like'));
+
+    function renderLikedProfiles() {
+      likedProfilesList.innerHTML = ''; // Limpa a lista antes de renderizar
+      if (likedProviders.length === 0) {
+        noLikedProfilesMessage.style.display = 'block';
+      } else {
+        noLikedProfilesMessage.style.display = 'none';
+        likedProviders.forEach(provider => {
+          const item = document.createElement('div');
+          item.className = 'liked-profile-item';
+          item.innerHTML = `
+            <img src="${provider.profilePic}" alt="Foto de Perfil de ${provider.name}" />
+            <h4>${provider.name}</h4>
+            <p>${provider.segment}</p>
+            <a href="mailto:${provider.contactEmail}" class="contact-button" aria-label="Enviar e-mail para ${provider.name}">
+              <span class="material-icons">email</span> E-mail
+            </a>
+            <a href="https://wa.me/${provider.contactWhatsapp}" target="_blank" rel="noopener noreferrer" class="contact-button" style="margin-top: 8px;" aria-label="Enviar mensagem via WhatsApp para ${provider.name}">
+              <span class="material-icons">chat</span> WhatsApp
+            </a>
+          `;
+          likedProfilesList.appendChild(item);
+        });
+      }
+    }
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+      showNextProfile();
+      renderLikedProfiles();
+    });
+  </script>
+</body>
+</html>
