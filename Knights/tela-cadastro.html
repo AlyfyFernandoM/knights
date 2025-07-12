@@ -163,9 +163,12 @@
   </main>
 
   <script>
+    // Importar funções da API
+    import { auth, saveAuthToken, saveUserData } from '../src/lib/api.js';
+
     const form = document.getElementById('cadastroForm');
 
-    form.addEventListener('submit', function(event) {
+    form.addEventListener('submit', async function(event) {
       event.preventDefault();
 
       // Remover mensagens anteriores
@@ -218,22 +221,28 @@
       }
 
       if (valido) {
-        // Salvar dados do usuário no localStorage (simulando cadastro)
-        const novoUsuario = {
-          nome: form.nome.value.trim(),
+        try {
+          const userData = {
+            name: form.nome.value.trim(),
           email: form.email.value.trim(),
-          senha: form.senha.value,
+            password: form.senha.value,
           segmento: form.segmento.value,
-          tipo: form['tipo-usuario'].value,
-          servicos: form.servicos.value.trim()
+            userType: form['tipo-usuario'].value,
+            description: form.servicos.value.trim()
         };
-        
-        // Em um sistema real, isso seria enviado para o backend
-        localStorage.setItem('ultimoCadastro', JSON.stringify(novoUsuario));
-        
-        alert('Cadastro realizado com sucesso! Você pode fazer login agora.');
-        form.reset();
-        window.location.href = 'login.html';
+          
+          const response = await auth.register(userData);
+          
+          // Salvar token e dados do usuário
+          saveAuthToken(response.token);
+          saveUserData(response.user);
+          
+          alert('Cadastro realizado com sucesso!');
+          form.reset();
+          window.location.href = '/login';
+        } catch (error) {
+          alert(error.message || 'Erro ao realizar cadastro');
+        }
       }
     });
 
