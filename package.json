@@ -1,9 +1,25 @@
-@@ .. @@
-   "scripts": {
-     "dev": "vite",
-     "build": "vite build",
--    "preview": "vite preview"
-+    "preview": "vite preview",
-+    "server": "node server/index.js",
-+    "start": "concurrently \"npm run server\" \"npm run dev\""
-   },
+{
+  "name": "knights-of-empress",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node server/index.js",
+    "start": "concurrently \"npm run server\" \"npm run dev\""
+  },
+  "devDependencies": {
+    "vite": "^5.4.2"
+  },
+  "dependencies": {
+    "mysql2": "^3.6.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "dotenv": "^16.3.1",
+    "concurrently": "^8.2.0"
+  }
+}
